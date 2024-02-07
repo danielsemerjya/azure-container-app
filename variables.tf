@@ -3,29 +3,48 @@ variable "location" {
   type        = string
 }
 
-variable "resource_group_names" {
-  description = "The name of the resource group in which the container app will be created."
-  type        = list(string)
-}
-
 variable "subscription_id" {
   description = "The subscription id in which the container app will be created."
   type        = string
 }
 
-variable "docker_credentials" {
-  description = "The docker credentials to use for the container app."
-  type = object({
-    username = string
-    password = string
-  })
+variable "environment_name" {
+  description = "The name of the environment in which the container app will be created."
+  type        = string
+  validation {
+    condition     = var.environment_name == "dev" || var.environment_name == "test" || var.environment_name == "prod"
+    error_message = "The environment name must be either dev, test, or prod."
+  }
 }
 
-variable "container_apps" {
+# container_app = {
+#   name = "simpleapi"
+#   containers = [
+#     {
+#       name                         = "frontapi"
+#       external_connections_enabled = true
+#       port_target                  = 3000
+#       port_exposed                 = 443
+#       container_name               = "frontapi"
+#       container_image_url          = "mcr.microsoft.com/azuredocs/aci-helloworld"
+#       container_cpu                = 0.25
+#       container_ram                = 0.5
+#       container_min_replicas       = 0
+#       container_max_replicas       = 3
+#       secrets = [
+#         {
+#           name  = "secret1"
+#           value = "dududu"
+#         }
+#       ]
+#     }
+#   ]
+# }
+
+variable "container_app" {
   description = "The container apps to create."
-  type = list(object({
-    name                = string
-    resource_group_name = string
+  type = object({
+    name = string
     containers = list(object({
       name                         = string
       external_connections_enabled = bool
@@ -42,5 +61,5 @@ variable "container_apps" {
         value = string
       }))
     }))
-  }))
+  })
 }
