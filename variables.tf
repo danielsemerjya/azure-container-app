@@ -17,6 +17,10 @@ variable "environment_name" {
   }
 }
 
+variable "container_registery_name" {
+  description = "The name of the container registry."
+  type        = string
+}
 # container_app = {
 #   name = "simpleapi"
 #   containers = [
@@ -49,13 +53,14 @@ variable "container_app" {
       name                         = string
       external_connections_enabled = bool
       port_target                  = number
-      port_exposed                 = number
-      container_name               = string
-      container_image_url          = string
-      container_cpu                = number
-      container_ram                = string
-      container_min_replicas       = number
-      container_max_replicas       = number
+      # port_exposed                  = number
+      container_name                = string
+      container_registry_server     = string
+      container_registry_repository = string
+      container_cpu                 = number
+      container_ram                 = string
+      container_min_replicas        = number
+      container_max_replicas        = number
       secrets = list(object({
         name  = string
         value = string
