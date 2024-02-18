@@ -26,11 +26,16 @@ resource "azurerm_role_assignment" "this" {
 }
 
 module "container_app" {
-  provider            = azurerm
-  source              = "git::github.com/danielsemerjya/azure-container-app.git"
+  source              = "git::https://github.com/danielsemerjya/azure-module-container-app.git"
   resource_group_name = azurerm_resource_group.this.name
   container_app_name  = local.container_app_full_name
   identity_ids        = [azurerm_user_assigned_identity.this.id]
 
   containers = var.container_app.containers
+
+  providers = {
+    azurerm.main = azurerm
+  }
+
+  depends_on = [azurerm_resource_group.this, azurerm_role_assignment.this]
 }
