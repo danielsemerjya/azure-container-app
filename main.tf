@@ -1,6 +1,6 @@
 locals {
-  container_registery_name = "crgivemeart0${var.environment_name}"
-  resource_group_name      = "rg-${var.container_app.name}-${var.environment_name}"
+  resource_group_name     = "rg-${var.container_app.name}-${var.environment_name}"
+  container_app_full_name = "${var.container_app.name}-${var.environment_name}"
 }
 
 resource "azurerm_resource_group" "this" {
